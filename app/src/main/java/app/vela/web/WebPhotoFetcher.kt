@@ -255,8 +255,8 @@ class WebPhotoFetcher @Inject constructor(
               var ID=$idj, CAP=$cap, EARLY=${if (early) "true" else "false"}, acc={}, tries=0, phase=0, cats=[], ci=0, sub=0, opened=false, pre={}, openedAt=0, rescued=0;
               // The gallery tabs worth tagging (skip All/Latest/Videos/Street View - All is the fallback
               // sweep). Menu names cover the app's 11 languages (tabs arrive localized).
-              var CATRE=/^(menu|menú|menù|speisekarte|cardápio|menukaart|меню|meny|food|drink|vibe|by owner)/i;
-              var MENURE=/^(menu|menú|menù|speisekarte|cardápio|menukaart|меню|meny)/i;
+              var CATRE=/^(menu|menú|menù|speisekarte|cardápio|menukaart|меню|meny|قائمة الطعام|القائمة|طعام|الطعام|مشروبات|المشروبات|food|drink|vibe|by owner)/i;
+              var MENURE=/^(menu|menú|menù|speisekarte|cardápio|menukaart|меню|meny|قائمة الطعام|القائمة)/i;
               function ok(u){ return !!u && u.indexOf('googleusercontent')>=0 && !/streetviewpixels/.test(u) && !/\/a[\/-]|ACg8oc|ALV-/.test(u); }
               function idOf(u){ return u.replace(/=[wshpc].*$/,''); }
               function urlOf(el){ var u=el.currentSrc||el.src||''; if(!u || u.indexOf('googleusercontent')<0){ var bg=el.style.backgroundImage||''; if(!bg){ try{ bg=getComputedStyle(el).backgroundImage||''; }catch(e){} } var m=bg.match(/url\(["']?([^"')]+)/); if(m) u=m[1]; } return u; }
