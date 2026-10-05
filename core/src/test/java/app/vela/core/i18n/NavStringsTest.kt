@@ -42,6 +42,7 @@ class NavStringsTest {
     @Test fun `registry defaults to english and switches by language`() {
         assertEquals(EnNavStrings, NavStringsRegistry.current()) // default, locale-independent
         assertEquals(FrNavStrings, NavStringsRegistry.forLanguage("fr"))
+        assertEquals(ArNavStrings, NavStringsRegistry.forLanguage("ar"))
         assertEquals(JaNavStrings, NavStringsRegistry.forLanguage("ja")) // now translated
         assertEquals(EnNavStrings, NavStringsRegistry.forLanguage("th")) // untranslated → English fallback
         NavStringsRegistry.setLocale(Locale.FRANCE)
@@ -143,7 +144,7 @@ class NavStringsTest {
     }
 
     @Test fun `every registered language produces non-blank nav strings and keeps road names`() {
-        val langs = listOf("fr", "de", "es", "it", "pt", "nl", "ru", "pl", "sv", "uk", "zh", "ja", "he")
+        val langs = listOf("fr", "de", "es", "it", "pt", "nl", "ru", "pl", "sv", "uk", "ar", "zh", "ja", "he")
         for (code in langs) {
             val ns = NavStringsRegistry.forLanguage(code)
             assertEquals("$code should map to its own NavStrings", code, ns.locale.language)
