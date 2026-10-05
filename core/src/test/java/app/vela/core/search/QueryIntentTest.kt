@@ -68,7 +68,7 @@ class QueryIntentTest {
     private fun p(s: String, l: String) = QueryIntents.parse(s, l)
 
     @Test fun `every app language has a command vocabulary`() {
-        val app = setOf("en", "fr", "de", "es", "it", "pt", "nl", "ru", "pl", "sv", "uk", "hu", "zh", "ja", "he")
+        val app = setOf("en", "fr", "de", "es", "it", "pt", "nl", "ru", "pl", "sv", "uk", "hu", "ar", "zh", "ja", "he")
         assertEquals(emptySet<String>(), app - QueryIntents.supportedLanguages)
     }
 
@@ -89,6 +89,17 @@ class QueryIntentTest {
         assertEquals(QueryIntent.Home, p("vigyél haza", "hu"))
         assertEquals(QueryIntent.Search("gyógyszertár"), p("hol van a legközelebbi gyógyszertár", "hu"))
         assertEquals(QueryIntent.Eta, p("mikor érkezem", "hu"))
+    }
+
+
+    @Test fun `arabic`() {
+        assertEquals(QueryIntent.Home, p("خذني إلى المنزل", "ar"))
+        assertEquals(QueryIntent.Work, p("خذني إلى العمل", "ar"))
+        assertEquals(QueryIntent.NavigateTo("محطة القطار"), p("اذهب إلى محطة القطار", "ar"))
+        assertEquals(QueryIntent.Search("محطة وقود"), p("أين أقرب محطة وقود", "ar"))
+        assertEquals(QueryIntent.Eta, p("متى أصل", "ar"))
+        assertEquals(QueryIntent.Route("بريدة", "الرياض"), p("من بريدة إلى الرياض", "ar"))
+        assertNull(p("قهوة مختصة", "ar"))
     }
 
     @Test fun `hebrew`() {
