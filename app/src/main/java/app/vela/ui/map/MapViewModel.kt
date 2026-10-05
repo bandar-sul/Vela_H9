@@ -1498,28 +1498,17 @@ class MapViewModel @Inject constructor(
      *  NB called from init{}, which runs BEFORE the later-declared `settingsPrefs` field
      *  initializer — resolve the prefs locally or this NPEs on launch (it did). */
     private fun maybeCheckForUpdate() {
-        val prefs = appContext.getSharedPreferences("vela_settings", Context.MODE_PRIVATE)
-        if (!prefs.getBoolean("self_update_check", true)) return
-        val now = System.currentTimeMillis()
-        if (now - prefs.getLong("last_update_check_ms", 0L) < 20 * 60 * 60_000L) return
-        prefs.edit().putLong("last_update_check_ms", now).apply()
-        val channel = app.vela.update.SelfUpdater.channel(prefs)
-        viewModelScope.launch {
-            val info = selfUpdater.check(app.vela.BuildConfig.VERSION_CODE, channel) ?: return@launch
-            if (info.versionCode <= prefs.getInt("update_dismissed_code", 0)) return@launch
-            _state.update { it.copy(updateInfo = info) }
-        }
+        // H9 edition: upstream Vela self-updates are intentionally disabled.
+        // This fork is updated only through H9-controlled builds so upstream releases
+        // cannot overwrite the car-specific fullscreen/Arabic customizations.
+        return
     }
 
     /** Settings "Check for updates" button — unthrottled, reports back via [onResult]
      *  (true = an update was found and the card is up; false = already current / check failed). */
     fun checkForUpdateNow(onResult: (Boolean) -> Unit) {
-        val channel = app.vela.update.SelfUpdater.channel(settingsPrefs)
-        viewModelScope.launch {
-            val info = selfUpdater.check(app.vela.BuildConfig.VERSION_CODE, channel)
-            if (info != null) _state.update { it.copy(updateInfo = info) }
-            onResult(info != null)
-        }
+        // H9 edition: manual upstream checks are disabled as well.
+        onResult(false)
     }
 
     /** Download the offered update and hand it to the system installer. */
