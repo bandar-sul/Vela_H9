@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Vela Maps</string>
+    <string name="app_name" translatable="false">Vela H9</string>
     <string name="app_name_generic" translatable="false">Maps</string>
 
     <!-- shared search-category chip labels (map + along-route); the search QUERY stays English in code -->
