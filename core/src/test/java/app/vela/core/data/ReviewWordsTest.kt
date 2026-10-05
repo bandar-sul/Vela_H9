@@ -43,7 +43,7 @@ class ReviewWordsTest {
         listOf(
             "Reviews", "評論", "评论", "Rezensionen", "Bewertungen", "Avis", "Reseñas",
             "Recensioni", "Avaliações", "Beoordelingen", "Отзывы", "Opinie", "Omdömen",
-            "Відгуки", "ביקורות", "クチコミ", "レビュー", "Vélemények",
+            "Відгуки", "ביקורות", "クチコミ", "レビュー", "Vélemények", "مراجعات",
         ).forEach { assertTrue("tab not recognized: $it", ReviewWords.isReviewsTab(it)) }
     }
 
@@ -54,14 +54,14 @@ class ReviewWordsTest {
             "Write a review",
             "Rezension schreiben",
             "Escribir una reseña",
-            "Écrire un avis",
+            "Écrire un avis", "اكتب مراجعة",
         ).forEach { assertFalse("would click the composer: $it", ReviewWords.isMoreReviewsButton(it)) }
     }
 
     @Test fun `a genuine more-reviews button is still clicked`() {
         listOf(
             "More reviews", "Alle Rezensionen", "Más reseñas", "Plus d'avis",
-            "もっとクチコミ", "更多評論", "Все отзывы", "Wszystkie opinie",
+            "もっとクチコミ", "更多評論", "Все отзывы", "Wszystkie opinie", "المزيد من المراجعات",
         ).forEach { assertTrue("missed: $it", ReviewWords.isMoreReviewsButton(it)) }
     }
 
