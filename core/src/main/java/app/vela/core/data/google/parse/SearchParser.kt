@@ -364,7 +364,13 @@ object SearchParser {
     /** "Permanently closed" (and the rarer "Permanently closed" rich-status variant)
      *  → a dead POI. Kept in search results but hidden from the map and labeled. */
     private fun isPermanentlyClosed(vararg status: String?): Boolean =
-        status.any { it != null && it.contains("Permanently", ignoreCase = true) }
+        status.any { s ->
+            s != null && (
+                s.contains("Permanently", ignoreCase = true) ||
+                s.contains("نهائيًا", ignoreCase = true) ||
+                s.contains("نهائيا", ignoreCase = true)
+            )
+        }
 
     /** Owner-set TEMPORARY closure, matched across the request languages' status wording
      *  ("Temporarily closed" / "Fermé temporairement" / "Vorübergehend geschlossen" …). CONTAINS,
@@ -374,6 +380,7 @@ object SearchParser {
     private val TEMP_CLOSED_WORDS = listOf(
         "Temporarily", "temporairement", "Vorübergehend", "temporalmente", "temporaneamente",
         "temporariamente", "Tijdelijk", "Временно", "Tymczasowo", "Tillfälligt", "Тимчасово", "זמנית",
+        "مؤقتًا", "مؤقتا",
     )
 
     internal fun isTemporarilyClosed(vararg status: String?): Boolean =
@@ -398,6 +405,8 @@ object SearchParser {
         "sv" to listOf("Stängt", "Öppnar", "Tillfälligt"),
         "uk" to listOf("Зачинено", "Відчиниться", "Тимчасово"),
         "hu" to listOf("Zárva", "Nyitás", "Hamarosan zár", "Végleg bezárt", "Ideiglenesen zárva"),
+        // Arabic: Google commonly uses مغلق/يفتح for closed-now and مؤقتًا/نهائيًا for closures.
+        "ar" to listOf("مغلق", "يفتح", "سيفتح", "مغلق مؤقتًا", "مغلق مؤقتا", "مغلق نهائيًا", "مغلق نهائيا"),
         // Chinese carries BOTH scripts under one key: parseOpenNow is keyed by the bare language
         // ("zh"), and hl=zh-CN answers Simplified while hl=zh-TW answers Traditional.
         // 已打烊/已歇業 = closed; 即将开始营业/即將開始營業 and 尚未营业 = opens later (closed now);
@@ -436,6 +445,7 @@ object SearchParser {
         "sv" to listOf("Öppet", "Stänger"),
         "uk" to listOf("Відчинено", "Зачиняється"),
         "hu" to listOf("Nyitva", "Zárás", "Hamarosan nyit"),
+        "ar" to listOf("مفتوح", "يغلق", "سيغلق"),
         // 营业中/營業中 = open now; 即将打烊/即將打烊 and 打烊时间/打烊時間 = closes later (open now).
         "zh" to listOf("营业中", "營業中", "打烊", "營業至", "营业至"),
         // 営業中 = open now; 営業終了時間/まもなく営業終了 = closes later (open now).
