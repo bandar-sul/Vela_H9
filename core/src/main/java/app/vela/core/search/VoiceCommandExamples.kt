@@ -97,6 +97,13 @@ object VoiceCommandExamples {
         Kind.NEARBY to "Hol van a legközelebbi gyógyszertár", Kind.NEARBY to "Kávézó a közelben",
         Kind.ETA to "Mikor érkezem",
     )
+    private val AR = ex(
+        Kind.HOME to "خذني إلى المنزل", Kind.WORK to "خذني إلى العمل",
+        Kind.GO to "اذهب إلى محطة القطار", Kind.GO to "أسرع طريق إلى المطار",
+        Kind.ROUTE to "من بريدة إلى الرياض",
+        Kind.NEARBY to "أين أقرب محطة وقود", Kind.NEARBY to "قهوة بالقرب مني",
+        Kind.ETA to "متى أصل",
+    )
     private val HE = ex(
         Kind.HOME to "קח אותי הביתה", Kind.WORK to "קח אותי לעבודה",
         Kind.GO to "נווט לתחנת הרכבת", Kind.GO to "נווט אל שדה התעופה",
@@ -120,7 +127,7 @@ object VoiceCommandExamples {
 
     private val TABLES = mapOf(
         "en" to EN, "fr" to FR, "de" to DE, "es" to ES, "it" to IT, "pt" to PT, "nl" to NL,
-        "ru" to RU, "uk" to UK, "pl" to PL, "sv" to SV, "hu" to HU, "he" to HE, "iw" to HE,
+        "ru" to RU, "uk" to UK, "pl" to PL, "sv" to SV, "hu" to HU, "ar" to AR, "he" to HE, "iw" to HE,
         "zh" to ZH, "ja" to JA,
     )
 
