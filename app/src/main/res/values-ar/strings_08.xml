@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_puck_shape_car">سيارة</string>
+    <string name="settings_car_red">أحمر</string>
+    <string name="settings_car_blue">أزرق</string>
+    <string name="settings_car_white">أبيض</string>
+    <string name="settings_car_green">أخضر</string>
+    <string name="settings_car_yellow">أصفر</string>
+    <string name="settings_puck_shape_ufo">طبق طائر</string>
+    <string name="settings_puck_shape_ship">سفينة قراصنة</string>
+    <string name="settings_puck_shape_duck">بطة مطاطية</string>
+    <string name="route_saved_label">مسارك: %1$s</string>
+    <string name="route_save">حفظ هذا المسار</string>
+    <string name="route_save_title">حفظ المسار</string>
+    <string name="route_save_hint">الاسم</string>
+    <string name="route_save_default">مسار إلى %1$s</string>
+    <string name="route_saved_toast">تم حفظ المسار. سيظهر بجانب المسارات الأخرى كلما طلبت الرحلة نفسها.</string>
+    <string name="settings_saved_routes">المسارات المحفوظة</string>
+    <string name="settings_saved_routes_empty">اختر مسارًا من شاشة اختيار المسارات ثم استخدم ⋮ &gt; حفظ هذا المسار. سيظهر بجانب المسارات الأخرى كلما طلبت الرحلة نفسها.</string>
+    <string name="settings_saved_route_rename">إعادة تسمية</string>
+    <string name="settings_saved_route_delete">حذف</string>
+    <string name="route_save_keep_stops">التوقف عند هذه الأماكن</string>
+    <string name="route_save_keep_stops_hint">عند الإيقاف تُستخدم المحطات لتشكيل مسار الطريق فقط، ويُعرض المسار بجانب الخيارات الأخرى لهذه الرحلة.</string>
+    <plurals name="saved_route_stops">
+        <item quantity="zero">%1$d محطة</item>
+        <item quantity="one">%1$d محطة</item>
+        <item quantity="two">%1$d محطتان</item>
+        <item quantity="few">%1$d محطات</item>
+        <item quantity="many">%1$d محطة</item>
+        <item quantity="other">%1$d محطة</item>
+    </plurals>
+    <string name="mapscreen_section_routes">مساراتك</string>
+    <string name="stops_max">يمكن للرحلة أن تحتوي على ما يصل إلى %1$d محطة</string>
+    <string name="route_update">حفظ التغييرات في %1$s</string>
+    <string name="route_updated_toast">تم حفظ التغييرات في %1$s</string>
+    <string name="settings_saved_route_edit">تعديل</string>
+    <string name="settings_saved_route_edit_hint">غيّر المحطات أو اختر طريقًا آخر، ثم ⋮ &gt; حفظ التغييرات.</string>
+    <string name="saved_pin">تثبيت في صفحة البحث</string>
+    <string name="saved_unpin">إلغاء التثبيت من صفحة البحث</string>
+    <string name="saved_sheet_places">الأماكن المحفوظة</string>
+    <string name="saved_sheet_routes">مساراتك</string>
+    <string name="driven_route_title">سلكت طريقك الخاص</string>
+    <string name="driven_route_save">حفظ الطريق الذي قدته</string>
+</resources>
