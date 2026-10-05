@@ -119,6 +119,8 @@ class PlaceStatusTest {
         assertEquals(false, SearchParser.parseOpenNow("Зачинено ⋅ Відчиниться о 09:00", "uk"))
         assertEquals(true, SearchParser.parseOpenNow("פתוח ⋅ נסגר ב-19:00", "iw"))
         assertEquals(false, SearchParser.parseOpenNow("סגור ⋅ נפתח ב-09:00", "iw"))
+        assertEquals(true, SearchParser.parseOpenNow("مفتوح ⋅ يغلق الساعة 19:00", "ar"))
+        assertEquals(false, SearchParser.parseOpenNow("مغلق ⋅ يفتح الساعة 09:00", "ar"))
     }
 
     @Test fun `unknown language falls back to the english table, never to open`() {
@@ -134,7 +136,7 @@ class PlaceStatusTest {
      *  the UI can't color open/closed. It MUST equal the shipped keyword-table languages (Hebrew
      *  is keyed under both "iw" and "he"). */
     @Test fun `STATUS_LANGS covers exactly the shipped status-table languages`() {
-        val expected = setOf("en", "fr", "de", "es", "it", "pt", "nl", "ru", "pl", "sv", "uk", "hu", "zh", "ja", "iw", "he")
+        val expected = setOf("en", "fr", "de", "es", "it", "pt", "nl", "ru", "pl", "sv", "uk", "hu", "ar", "zh", "ja", "iw", "he")
         assertEquals(expected, SearchParser.STATUS_LANGS)
     }
 
