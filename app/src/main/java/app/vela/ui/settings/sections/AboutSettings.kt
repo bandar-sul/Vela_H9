@@ -53,6 +53,24 @@ internal fun AboutSettingsScreen(vm: MapViewModel, onBack: () -> Unit) {
         Spacer(Modifier.height(4.dp))
         PageIntro(stringResource(R.string.settings_about_hint))
         Spacer(Modifier.height(8.dp))
+
+        SettingsGroup(title = stringResource(R.string.h9_about_title)) {
+            androidx.compose.foundation.layout.Column(Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
+                Text(
+                    stringResource(R.string.h9_developer_credit),
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold,
+                )
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    stringResource(R.string.h9_social_credit),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+
+        Spacer(Modifier.height(8.dp))
         SettingsGroup(title = stringResource(R.string.settings_support)) {
         androidx.compose.foundation.layout.Column(Modifier.padding(horizontal = 16.dp)) {
         Hint(stringResource(R.string.settings_support_hint))
