@@ -167,8 +167,8 @@ private const val ROUTE_PENDING_MAX_PASSES = 40
 // The 3D puck overlay waits this long after a gesture's last camera move before it replaces the
 // map's own symbol (see the detached branch of the nav ticker).
 private const val PUCK_GESTURE_SETTLE_MS = 180L
-private const val IDLE_WORK_GAP_MS = 1000L
-private const val IDLE_WORK_TRAIL_MS = 250L
+private const val IDLE_WORK_GAP_MS = 1800L
+private const val IDLE_WORK_TRAIL_MS = 500L
 private const val NAV_CUT_M = 400.0       // cut piece length: 256 gradient texels over 400 m = 1.6 m each
 private const val NAV_CUT_SLACK_M = 100.0 // slide the piece forward when the arrow gets this close to its end
 private const val NAV_CUT_BACK_M = 20.0   // the piece starts this far behind the arrow when it slides
@@ -1046,6 +1046,7 @@ fun VelaMapView(
     val mPerPxHolder = remember { doubleArrayOf(10.0) } // meters/pixel at the camera (scale-bar feed) —
                                                         // sizes the split-update throttle to sub-pixel
     val lastScaleReport = remember { doubleArrayOf(-1.0) } // last mpp PUSHED to compose (gate, see reportScale)
+    val lastScaleReportAt = remember { longArrayOf(0L) } // H9: avoid Compose churn during pinch/pan
     // A manual pinch sets a zoom override (navUserZoom) that we keep following at; it's cleared
     // when you PAN (in the move listener, so a pan→Re-center returns to auto-zoom) and when nav
     // ends. Keyed on navMode, NOT navFollowing — navFollowing flips while panning and would
@@ -4182,6 +4183,13 @@ fun VelaMapView(
                 }
                 idleWork[0] = {
                     idleWorkAt[0] = android.os.SystemClock.elapsedRealtime()
+                    // H9 performance mode: rebuild zoom-dependent route dots once, after the
+                    // gesture settles, instead of repeatedly during pinch/drag.
+                    if (dashDotPoly.isNotEmpty() &&
+                        kotlin.math.abs(map.cameraPosition.zoom - dashDotZoom) > 0.35
+                    ) {
+                        map.getStyle { st -> regenRouteDots(map, st, dashDotPoly) }
+                    }
                     // Keep the VM's "area you're viewing" current so the offline
                     // download can be triggered from Settings, not a map FAB.
                     val b = map.projection.visibleRegion.latLngBounds
@@ -4365,14 +4373,15 @@ fun VelaMapView(
                     map.cameraPosition.target?.let { t ->
                         val mpp = map.projection.getMetersPerPixelAtLatitude(t.latitude)
                         mPerPxHolder[0] = mpp
-                        // This fires on EVERY camera-move frame. Only push to compose state when the
-                        // value moved enough to change the drawn bar (>1%): an unconditional write
-                        // recomposed the scale bar per pan frame for invisible sub-percent latitude
-                        // drift — wasted main-thread work right when a slow phone can least afford it.
+                        val now = android.os.SystemClock.uptimeMillis()
+                        // H9 performance mode: this callback fires every camera frame. Keep the
+                        // scale bar responsive, but do not recompose the UI dozens of times/sec.
                         if (lastScaleReport[0] <= 0.0 ||
-                            kotlin.math.abs(mpp - lastScaleReport[0]) > lastScaleReport[0] * 0.01
+                            (now - lastScaleReportAt[0] >= 120L &&
+                                kotlin.math.abs(mpp - lastScaleReport[0]) > lastScaleReport[0] * 0.03)
                         ) {
                             lastScaleReport[0] = mpp
+                            lastScaleReportAt[0] = now
                             scaleChanged.value(mpp)
                         }
                     }
@@ -4380,13 +4389,9 @@ fun VelaMapView(
                 }
                 map.addOnCameraMoveListener {
                     reportScale()
-                    // Keep the walk/bike dot spacing constant WHILE zooming, not just at idle —
-                    // gated to ~0.2-zoom steps so it's a handful of cheap regens per zoom doubling.
-                    if (dashDotPoly.isNotEmpty() &&
-                        kotlin.math.abs(map.cameraPosition.zoom - dashDotZoom) > 0.2
-                    ) {
-                        map.getStyle { st -> regenRouteDots(map, st, dashDotPoly) }
-                    }
+                    // H9: do NOT rebuild walk/bike route dots during pinch/drag. That work uploads
+                    // GeoJSON to MapLibre and is visible as hitching on the SA8155. The idle worker
+                    // below regenerates once after the gesture settles.
                 }
                 reportScale()
                 // Press-and-hold anywhere → drop a pin and reverse-geocode it.
