@@ -43,6 +43,7 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.PopupProperties
 
 /** Scope for [VelaMenu] content — call [item] once per menu entry (same order as it should show). */
 class VelaMenuScope internal constructor(internal val dpad: Boolean) {
@@ -78,7 +79,14 @@ fun VelaMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Composab
             }
         }
     } else {
-        DropdownMenu(expanded = expanded, onDismissRequest = onDismissRequest) {
+        // H9/Android 9: a focusable popup briefly owns window focus and the OEM restores
+        // its status/navigation chrome. Keep touch menus non-focusable so the Activity remains
+        // the immersive owner while layers/categories/sort menus are open.
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = onDismissRequest,
+            properties = PopupProperties(focusable = false),
+        ) {
             VelaMenuScope(dpad = false).content()
         }
     }
