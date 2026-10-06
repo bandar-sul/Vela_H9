@@ -23,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -36,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
@@ -111,6 +113,37 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
                 stringResource(R.string.welcome_feature_open_source_title),
                 stringResource(R.string.welcome_feature_open_source_body),
             )
+
+            // H9 edition identity lives on the welcome page itself instead of a blocking
+            // first-launch dialog. The store URL is a real tappable link.
+            val uriHandler = LocalUriHandler.current
+            Column(
+                Modifier.fillMaxWidth().padding(top = 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    stringResource(R.string.h9_developer_credit),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    stringResource(R.string.h9_social_credit),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    stringResource(R.string.h9_store_link),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable { uriHandler.openUri("https://h9-story.com") }
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                )
+            }
             Spacer(Modifier.height(40.dp))
             GetStartedButton(onGetStarted)
             Spacer(Modifier.height(8.dp))
