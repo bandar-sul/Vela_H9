@@ -41,4 +41,7 @@
     <string name="saved_sheet_routes">مساراتك</string>
     <string name="driven_route_title">سلكت طريقك الخاص</string>
     <string name="driven_route_save">حفظ الطريق الذي قدته</string>
+    <string name="h9_developer_notice_title">نسخة H9</string>
+    <string name="h9_developer_notice_continue">متابعة</string>
+    <string name="h9_developer_notice_body">تم التطوير بواسطة بندر بن سليمان\n\nتيك توك و سناب : h9_haval\n\nمتجر H9\nhttps://h9-story.com</string>
 </resources>
