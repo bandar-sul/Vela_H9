@@ -1295,4 +1295,7 @@
     <string name="saved_sheet_routes">Your routes</string>
     <string name="driven_route_title">You went your own way</string>
     <string name="driven_route_save">Save the way you drove</string>
+    <string name="h9_developer_notice_title">H9 Edition</string>
+    <string name="h9_developer_notice_continue">Continue</string>
+    <string name="h9_developer_notice_body">Developed by Bandar bin Sulaiman\n\nTikTok &amp; Snapchat: h9_haval\n\nH9 Store\nhttps://h9-story.com</string>
 </resources>
