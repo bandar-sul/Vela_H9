@@ -321,14 +321,15 @@ object PlaceNames {
      * BMP Unicode ranges directly instead of compiling a script-property Regex at class init.
      */
     private fun containsCjkLike(s: String): Boolean = s.any { ch ->
-        ch in '\\u3400'..'\\u4DBF' || // CJK Extension A
-            ch in '\\u4E00'..'\\u9FFF' || // CJK Unified Ideographs
-            ch in '\\uF900'..'\\uFAFF' || // CJK Compatibility Ideographs
-            ch in '\\u3040'..'\\u309F' || // Hiragana
-            ch in '\\u30A0'..'\\u30FF' || // Katakana
-            ch in '\\u1100'..'\\u11FF' || // Hangul Jamo
-            ch in '\\uAC00'..'\\uD7AF' || // Hangul syllables
-            ch in '\\u0E00'..'\\u0E7F'    // Thai
+        val code = ch.code
+        code in 0x3400..0x4DBF || // CJK Extension A
+            code in 0x4E00..0x9FFF || // CJK Unified Ideographs
+            code in 0xF900..0xFAFF || // CJK Compatibility Ideographs
+            code in 0x3040..0x309F || // Hiragana
+            code in 0x30A0..0x30FF || // Katakana
+            code in 0x1100..0x11FF || // Hangul Jamo
+            code in 0xAC00..0xD7AF || // Hangul syllables
+            code in 0x0E00..0x0E7F    // Thai
     }
     private val CJK_SUFFIXES = listOf(
         // ja
