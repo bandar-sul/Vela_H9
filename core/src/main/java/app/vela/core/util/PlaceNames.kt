@@ -315,7 +315,21 @@ object PlaceNames {
      * "スターバックス" (VARIANT), "星巴克咖啡" is "星巴克", "セブン-イレブン渋谷駅前店" contains
      * "セブン-イレブン" (OVERLAP, the extra is a branch name).
      */
-    private val CJK = Regex("[\\p{IsHan}\\p{IsHiragana}\\p{IsKatakana}\\p{IsHangul}\\p{IsThai}]")
+    /**
+     * Android 9's java.util.regex/ICU rejects Java's \\p{IsHan}/\\p{IsHiragana} script aliases
+     * with U_ILLEGAL_ARGUMENT_ERROR. Keep this startup-safe on the H9 by checking the relevant
+     * BMP Unicode ranges directly instead of compiling a script-property Regex at class init.
+     */
+    private fun containsCjkLike(s: String): Boolean = s.any { ch ->
+        ch in '\\u3400'..'\\u4DBF' || // CJK Extension A
+            ch in '\\u4E00'..'\\u9FFF' || // CJK Unified Ideographs
+            ch in '\\uF900'..'\\uFAFF' || // CJK Compatibility Ideographs
+            ch in '\\u3040'..'\\u309F' || // Hiragana
+            ch in '\\u30A0'..'\\u30FF' || // Katakana
+            ch in '\\u1100'..'\\u11FF' || // Hangul Jamo
+            ch in '\\uAC00'..'\\uD7AF' || // Hangul syllables
+            ch in '\\u0E00'..'\\u0E7F'    // Thai
+    }
     private val CJK_SUFFIXES = listOf(
         // ja
         "駅前店", "本店", "支店", "分店", "店舗", "店", "薬局", "銀行", "支行", "病院", "医院", "診療所", "歯科", "学校", "公園", "駅", "駐車場",
@@ -494,7 +508,7 @@ object PlaceNames {
         val na = normalized(a); val nb = normalized(b)
         if (na.isEmpty() || nb.isEmpty()) return Match.NONE
         if (na == nb) return Match.EXACT
-        if (CJK.containsMatchIn(na) || CJK.containsMatchIn(nb)) return cjkMatch(na, nb)
+        if (containsCjkLike(na) || containsCjkLike(nb)) return cjkMatch(na, nb)
         // Plurals fold PAIRWISE ("Sola Salons" against "Sola Salon Studios"): a word loses its "s"
         // only when the other name carries the singular, so "Davis" and "Wells" stay themselves.
         val ra = na.split(' '); val rb = nb.split(' ')
