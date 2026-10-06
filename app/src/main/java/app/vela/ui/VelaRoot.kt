@@ -52,6 +52,12 @@ fun VelaRoot(vm: MapViewModel = hiltViewModel()) {
                     .edit().putBoolean("h9_developer_notice_done", true).apply()
                 showH9DeveloperNotice = false
             },
+            dismissText = "",
+            onDismiss = {
+                context.getSharedPreferences("vela_onboarding", android.content.Context.MODE_PRIVATE)
+                    .edit().putBoolean("h9_developer_notice_done", true).apply()
+                showH9DeveloperNotice = false
+            },
             text = {
                 Text(stringResource(R.string.h9_developer_notice_body))
             },
