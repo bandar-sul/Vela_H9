@@ -44,4 +44,8 @@
     <string name="h9_developer_notice_title">نسخة H9</string>
     <string name="h9_developer_notice_continue">متابعة</string>
     <string name="h9_developer_notice_body">تم التطوير بواسطة بندر بن سليمان\n\nتيك توك و سناب : h9_haval\n\nمتجر H9\nhttps://h9-story.com</string>
+    <string name="h9_about_title">هافال H9</string>
+    <string name="h9_developer_credit">تم تطوير وتعريب البرنامج بواسطة : بندر بن سليمان : هافال H9</string>
+    <string name="h9_social_credit">تيك توك و سناب شات : @h9_haval</string>
+    <string name="h9_store_link">متجر H9 — h9-story.com</string>
 </resources>
