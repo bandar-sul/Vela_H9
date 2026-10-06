@@ -68,7 +68,14 @@ object AppLocale {
         apply()
         // Re-create the Activity so `stringResource`/`getString` re-resolve in the new language
         // (the nav voice already switched via apply()); no-op when nothing actually changed.
-        if (changed) onLocaleChanged?.invoke()
+        if (changed) {
+            // H9/Android 9: recreating the Activity synchronously from the Compose click that
+            // also changed locale state can tear down the composition mid-dispatch on the OEM ROM.
+            // Defer recreation to the next main-loop turn so the click/state transaction completes.
+            android.os.Handler(android.os.Looper.getMainLooper()).post {
+                onLocaleChanged?.invoke()
+            }
+        }
     }
 
     /** The resolved locale — the system default when following the system, else the override.
