@@ -3,6 +3,7 @@ package app.vela
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -59,6 +60,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         enableH9Fullscreen()
+        // H9 Android 9 exposes its left vehicle/system rail whenever the ROM thinks immersive
+        // mode was interrupted (for example opening a Compose popup). Re-hide it immediately.
+        @Suppress("DEPRECATION")
+        window.decorView.setOnSystemUiVisibilityChangeListener {
+            window.decorView.postDelayed({ enableH9Fullscreen() }, 40L)
+        }
         // A language change re-creates this Activity so the whole UI re-reads localized resources.
         AppLocale.onLocaleChanged = { recreate() }
         // Picture-in-picture mini map while navigating (user 2026-07-24, the Google Maps
@@ -133,7 +140,18 @@ class MainActivity : ComponentActivity() {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus && !isInPictureInPictureMode) {
             enableH9Fullscreen()
+            // Some SA8155 builds restore the side rail one frame after focus returns.
+            window.decorView.postDelayed({ enableH9Fullscreen() }, 120L)
         }
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val handled = super.dispatchTouchEvent(ev)
+        if (ev.actionMasked == MotionEvent.ACTION_UP || ev.actionMasked == MotionEvent.ACTION_CANCEL) {
+            // Layer/category popups are the common trigger for the H9 side rail.
+            window.decorView.postDelayed({ enableH9Fullscreen() }, 35L)
+        }
+        return handled
     }
 
     /** A portrait-ish mini map, Google's PiP proportions. */
