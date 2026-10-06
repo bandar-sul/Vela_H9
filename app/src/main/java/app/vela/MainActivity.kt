@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -118,6 +119,10 @@ class MainActivity : ComponentActivity() {
      */
     @Suppress("DEPRECATION")
     private fun enableH9Fullscreen() {
+        // FLAG_FULLSCREEN keeps the H9 status bar suppressed even when a transient Compose
+        // popup/menu is shown. Immersive-sticky below handles the landscape navigation rail.
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowCompat.getInsetsController(window, window.decorView).apply {
             hide(WindowInsetsCompat.Type.systemBars())
