@@ -32,6 +32,33 @@ import app.vela.ui.settings.SettingsScreen
 fun VelaRoot(vm: MapViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
+    var showH9DeveloperNotice by rememberSaveable {
+        mutableStateOf(
+            !context.getSharedPreferences("vela_onboarding", android.content.Context.MODE_PRIVATE)
+                .getBoolean("h9_developer_notice_done", false)
+        )
+    }
+    if (showH9DeveloperNotice) {
+        VelaDialog(
+            onDismissRequest = {
+                context.getSharedPreferences("vela_onboarding", android.content.Context.MODE_PRIVATE)
+                    .edit().putBoolean("h9_developer_notice_done", true).apply()
+                showH9DeveloperNotice = false
+            },
+            title = stringResource(R.string.h9_developer_notice_title),
+            confirmText = stringResource(R.string.h9_developer_notice_continue),
+            onConfirm = {
+                context.getSharedPreferences("vela_onboarding", android.content.Context.MODE_PRIVATE)
+                    .edit().putBoolean("h9_developer_notice_done", true).apply()
+                showH9DeveloperNotice = false
+            },
+            text = {
+                Text(stringResource(R.string.h9_developer_notice_body))
+            },
+        )
+        return
+    }
+
     if (!Onboarding.welcomeDone.value) {
         WelcomeScreen(onGetStarted = { Onboarding.completeWelcome(context) })
         return
