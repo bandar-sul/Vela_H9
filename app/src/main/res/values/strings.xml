@@ -1298,4 +1298,8 @@
     <string name="h9_developer_notice_title">H9 Edition</string>
     <string name="h9_developer_notice_continue">Continue</string>
     <string name="h9_developer_notice_body">Developed by Bandar bin Sulaiman\n\nTikTok &amp; Snapchat: h9_haval\n\nH9 Store\nhttps://h9-story.com</string>
+    <string name="h9_about_title">Haval H9</string>
+    <string name="h9_developer_credit">Developed and localized by: Bandar bin Sulaiman : Haval H9</string>
+    <string name="h9_social_credit">TikTok &amp; Snapchat: @h9_haval</string>
+    <string name="h9_store_link">H9 Store — h9-story.com</string>
 </resources>
