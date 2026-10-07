@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-h9:
@@ -97,3 +97,19 @@ jobs:
           path: h9-output/Vela_H9.apk
           if-no-files-found: error
           retention-days: 14
+
+
+      - name: Publish stable H9 release
+        if: github.ref == 'refs/heads/main'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euxo pipefail
+          TAG="h9-latest"
+          gh release delete "$TAG" --yes --cleanup-tag || true
+          git tag -f "$TAG"
+          git push origin -f "$TAG"
+          gh release create "$TAG" h9-output/Vela_H9.apk \
+            --title "Vela H9 Latest" \
+            --notes "Latest tested H9 build from main. Build #${{ github.run_number }}."
